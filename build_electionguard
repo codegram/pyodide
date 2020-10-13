@@ -1,0 +1,8 @@
+#!/bin/sh
+
+echo
+echo "WARNING: Before running this script modify your Docker Desktop configuration to allow it to use 4 CPUs and at least 4GB of memory."
+echo
+sleep 5
+
+PYODIDE_PACKAGES="micropip,numpy,attrs,sortedcontainers,hypothesis,electionguard,decidim.electionguard" make
