@@ -8,8 +8,8 @@ patches:
   - patches/no-gmpy2.patch
 requirements:
   run:
-    - numpy
-    - hypothesis
+  - numpy
+  - hypothesis
   test:
   imports:
   - electionguard
