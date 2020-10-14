@@ -1,0 +1,90 @@
+diff --git a/src/electionguard/rsa.py b/src/electionguard/rsa.py
+index 265d2b8..b2f2167 100644
+--- a/src/electionguard/rsa.py
++++ b/src/electionguard/rsa.py
+@@ -1,19 +1,4 @@
+-from cryptography.hazmat.backends import default_backend
+-from cryptography.hazmat.primitives.asymmetric.rsa import (
+-    generate_private_key,
+-    RSAPrivateKey,
+-    RSAPrivateKeyWithSerialization,
+-    RSAPublicKey,
+-)
+-from cryptography.hazmat.primitives.asymmetric.padding import PKCS1v15
+-from cryptography.hazmat.primitives.serialization import (
+-    Encoding,
+-    load_pem_private_key,
+-    load_pem_public_key,
+-    NoEncryption,
+-    PrivateFormat,
+-    PublicFormat,
+-)
++import rsa
+ from typing import Optional, NamedTuple
+
+
+@@ -31,31 +16,19 @@ class RSAKeyPair(NamedTuple):
+     private_key: str
+     public_key: str
+
+-
+ def rsa_keypair() -> RSAKeyPair:
+     """
+     Create RSA keypair
+
+     :return: RSA key pair
+     """
++    public, private = rsa.newkeys(KEY_SIZE, exponent=PUBLIC_EXPONENT)
+
+-    private_key: RSAPrivateKeyWithSerialization = generate_private_key(
+-        public_exponent=PUBLIC_EXPONENT, key_size=KEY_SIZE, backend=default_backend()
+-    )
+-    private_key_bytes = private_key.private_bytes(
+-        encoding=Encoding.PEM,
+-        format=PrivateFormat.TraditionalOpenSSL,
+-        encryption_algorithm=NoEncryption(),
++    return RSAKeyPair(
++        str(public.save_pkcs1(), ISO_ENCODING),
++        str(private.save_pkcs1(), ISO_ENCODING)
+     )
+-    private_key_string = str(private_key_bytes, ISO_ENCODING)
+
+-    public_key: RSAPublicKey = private_key.public_key()
+-    public_key_bytes = public_key.public_bytes(
+-        encoding=Encoding.PEM, format=PublicFormat.SubjectPublicKeyInfo
+-    )
+-    public_key_string = str(public_key_bytes, ISO_ENCODING)
+-
+-    return RSAKeyPair(private_key_string, public_key_string)
+
+
+ def rsa_encrypt(message: str, public_key: str) -> Optional[str]:
+@@ -67,11 +40,11 @@ def rsa_encrypt(message: str, public_key: str) -> Optional[str]:
+     :return: Encrypted message
+     """
+     data = bytes(public_key, ISO_ENCODING)
+-    rsa_public_key: RSAPublicKey = load_pem_public_key(data, backend=default_backend())
++    rsa_public_key: rsa.PublicKey = rsa.load_pkcs1(public_key)
+     plaintext = bytes.fromhex(message)
+     if len(plaintext) > MAX_BITS:
+         return None
+-    ciphertext = rsa_public_key.encrypt(plaintext, PKCS1v15())
++    ciphertext = rsa.encrypt(plaintext, rsa_public_key)
+     return str(ciphertext, ISO_ENCODING)
+
+
+@@ -85,12 +58,10 @@ def rsa_decrypt(encrypted_message: str, private_key: str) -> Optional[str]:
+     """
+
+     data = bytes(private_key, ISO_ENCODING)
+-    rsa_private_key: RSAPrivateKey = load_pem_private_key(
+-        data, password=None, backend=default_backend()
+-    )
++    rsa_private_key: rsa.PrivateKey = rsa.load_pkcs1(data)
+     ciphertext = bytes(encrypted_message, ISO_ENCODING)
+     try:
+-        plaintext = rsa_private_key.decrypt(ciphertext, PKCS1v15())
++        plaintext = rsa.decrypt(ciphertext, rsa_private_key)
+     except ValueError:
+         return None
+     hex_str = plaintext.hex()

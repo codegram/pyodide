@@ -5,12 +5,15 @@ source:
   sha256: 5fbc1dfb3bf20ae6edae444d4505a6fc081ba64292a87a352d42da3729773e52
   url: https://files.pythonhosted.org/packages/6a/59/ea181b8f7a7f155cb3ea8fb45d3860cd338aef8b5ae502b5a62da77e9246/electionguard-1.1.9.tar.gz
   patches:
+  - patches/no-cryptography.patch
   - patches/no-gmpy2.patch
+  - patches/no-multiprocessing.patch
 requirements:
   run:
   - numpy
   - hypothesis
   - jsons
+  - rsa
   test:
   imports:
   - electionguard

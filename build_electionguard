@@ -5,6 +5,6 @@ echo "WARNING: Before running this script modify your Docker Desktop configurati
 echo
 sleep 5
 
-PYODIDE_PACKAGES="micropip,numpy,attrs,sortedcontainers,hypothesis,jsons,typish,electionguard,decidim-electionguard" make
+PYODIDE_PACKAGES="micropip,numpy,attrs,sortedcontainers,hypothesis,jsons,typish,rsa,electionguard,decidim-electionguard" make
 
 mkdir -p dist
