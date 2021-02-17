@@ -44,8 +44,8 @@ index 265d2b8..b2f2167 100644
 -        format=PrivateFormat.TraditionalOpenSSL,
 -        encryption_algorithm=NoEncryption(),
 +    return RSAKeyPair(
-+        str(public.save_pkcs1(), ISO_ENCODING),
-+        str(private.save_pkcs1(), ISO_ENCODING)
++        str(private.save_pkcs1(), ISO_ENCODING),
++        str(public.save_pkcs1(), ISO_ENCODING)
      )
 -    private_key_string = str(private_key_bytes, ISO_ENCODING)
 
@@ -64,7 +64,7 @@ index 265d2b8..b2f2167 100644
      """
      data = bytes(public_key, ISO_ENCODING)
 -    rsa_public_key: RSAPublicKey = load_pem_public_key(data, backend=default_backend())
-+    rsa_public_key: rsa.PublicKey = rsa.load_pkcs1(public_key)
++    rsa_public_key: rsa.key.PublicKey = rsa.key.PublicKey.load_pkcs1(data)
      plaintext = bytes.fromhex(message)
      if len(plaintext) > MAX_BITS:
          return None
@@ -80,7 +80,7 @@ index 265d2b8..b2f2167 100644
 -    rsa_private_key: RSAPrivateKey = load_pem_private_key(
 -        data, password=None, backend=default_backend()
 -    )
-+    rsa_private_key: rsa.PrivateKey = rsa.load_pkcs1(data)
++    rsa_private_key: rsa.key.PrivateKey = rsa.key.PrivateKey.load_pkcs1(data)
      ciphertext = bytes(encrypted_message, ISO_ENCODING)
      try:
 -        plaintext = rsa_private_key.decrypt(ciphertext, PKCS1v15())

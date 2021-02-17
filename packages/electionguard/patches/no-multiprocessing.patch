@@ -1,24 +1,24 @@
 diff --git a/src/electionguard/scheduler.py b/src/electionguard/scheduler.py
-index aa479ef..74aa9da 100644
+index f4a5e2f..58637f0 100644
 --- a/src/electionguard/scheduler.py
 +++ b/src/electionguard/scheduler.py
-@@ -1,103 +1,13 @@
+@@ -1,106 +1,16 @@
 -from __future__ import annotations
--from contextlib import AbstractContextManager
+ from contextlib import AbstractContextManager
 -from multiprocessing import Pool as ProcessPool
 -from multiprocessing.dummy import Pool as ThreadPool
 -from multiprocessing.pool import Pool
 -from psutil import cpu_count
 -import traceback
  from typing import Any, Callable, Iterable, List, TypeVar
--
+ 
 -from .logs import log_warning
  from .singleton import Singleton
-
+ 
  _T = TypeVar("_T")
-
-
--class Scheduler(Singleton, AbstractContextManager):
+ 
+ 
+ class Scheduler(Singleton, AbstractContextManager):
 -    """
 -    Worker that wraps Multprocessing and allows
 -    for shared context or spawning processes.
@@ -59,7 +59,6 @@ index aa479ef..74aa9da 100644
 -        """Get CPU count"""
 -        return int(cpu_count(logical=False))
 -
-+class Scheduler(Singleton):
      def schedule(
          self,
          task: Callable,
@@ -110,4 +109,5 @@ index aa479ef..74aa9da 100644
 -                f"safe_starmap({task}, {arguments}) failed with \n {traceback.format_exc()}"
 -            )
 -            return []
-+        return list(map(task, arguments))
++      return list(map(task, arguments))
+\ No newline at end of file
