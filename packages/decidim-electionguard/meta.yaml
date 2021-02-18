@@ -2,7 +2,7 @@ package:
   name: decidim-electionguard
   version: 0.1.0
 source:
-  url: https://github.com/decidim/decidim-electionguard/raw/feat/use-type-subtype/dist/decidim-electionguard-0.1.0.tar.gz
+  url: https://github.com/decidim/decidim-electionguard/raw/main/dist/decidim-electionguard-0.1.0.tar.gz
 requirements:
   run:
   - electionguard
