@@ -1,16 +1,16 @@
 PYODIDE_ROOT=$(abspath ../..)
 include ../../Makefile.envs
 
-LIBGMPVERSION=6.2.0
+LIBGMPVERSION=6.2.1
 
 ROOT=$(abspath .)
 
 SRC=$(ROOT)/gmp-$(LIBGMPVERSION)
-TARBALL=$(ROOT)/downloads/gmp-$(LIBGMPVERSION).tar.lz
-URL=https://gmplib.org/download/gmp/gmp-$(LIBGMPVERSION).tar.lz
+TARBALL=$(ROOT)/downloads/gmp-$(LIBGMPVERSION).tar.xz
+URL=https://gmplib.org/download/gmp/gmp-$(LIBGMPVERSION).tar.xz
 
 
-all: $(SRC)/libgmp.a
+all: $(SRC)/.libs/libgmp.a
 
 
 clean:
@@ -29,8 +29,7 @@ $(SRC)/Makefile: $(TARBALL)
 	touch $(SRC)/Makefile
 
 
-
-$(SRC)/libgmp.a: $(SRC)/Makefile
+$(SRC)/.libs/libgmp.a: $(SRC)/Makefile
 	( \
 		cd $(SRC) ; \
 		gmp_asm_syntax_testing=no emconfigure ./configure \
@@ -39,3 +38,4 @@ $(SRC)/libgmp.a: $(SRC)/Makefile
 			--disable-shared ; \
 		emmake make -j $${PYODIDE_JOBS:-3} ; \
 	)
+	touch $(SRC)/.libs/libgmp.a

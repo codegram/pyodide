@@ -37,7 +37,7 @@ packages/libiconv/libiconv*
 packages/zlib/zlib*
 packages/.artifacts
 packages/*/build.log
-packages/libgmp/gmp-6.2.0
+packages/libgmp/gmp-*
 
 docs/python-api/
 docs/micropip-api/

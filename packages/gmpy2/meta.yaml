@@ -9,9 +9,9 @@ source:
 build:
   skip_host: False
   ldflags: |
-    -L../../../libgmp/gmp-6.2.0/.libs
+    -L../../../libgmp/gmp-6.2.1/.libs
   cflags: |
-    -I../../../libgmp/gmp-6.2.0
+    -I../../../libgmp/gmp-6.2.1
 test:
   imports:
   - gmpy2
